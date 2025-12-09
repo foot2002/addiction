@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="중독물질 노출시 응급처치 정보 제공 챗봇">
+    <title>중독 응급처치 챗봇</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4A90E2">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%234A90E2'/><path d='M30 50 L45 65 L70 35' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <h1>중독 응급처치</h1>
+            <p class="subtitle">독성물질 노출시 초기대응 정보</p>
+        </header>
+
+        <!-- 메인 네비게이션 (제거됨 - 각 페이지 내부 네비게이션 사용) -->
+
+        <!-- 페이지 컨텐츠 -->
+        <main class="content">
+            <!-- 홈 페이지 -->
+            <section id="home" class="page active">
+                <!-- 홈 내부 네비게이션 -->
+                <nav class="page-nav">
+                    <button class="page-nav-btn active" data-page="home">
+                        <span class="icon">🏠</span>
+                        <span>홈</span>
+                    </button>
+                    <button class="page-nav-btn" data-page="chatbot">
+                        <span class="icon">💬</span>
+                        <span>상담</span>
+                    </button>
+                    <button class="page-nav-btn" data-page="guide">
+                        <span class="icon">📋</span>
+                        <span>응급처치</span>
+                    </button>
+                    <button class="page-nav-btn" data-page="hospital">
+                        <span class="icon">🏥</span>
+                        <span>병원찾기</span>
+                    </button>
+                </nav>
+
+                <!-- 히어로 섹션 -->
+                <div class="hero-section">
+                    <div class="hero-background-shapes">
+                        <div class="shape shape-1"></div>
+                        <div class="shape shape-2"></div>
+                        <div class="shape shape-3"></div>
+                    </div>
+                    <div class="hero-content">
+                        <div class="hero-illustration">
+                            <div class="medical-icon-wrapper">
+                                <svg class="medical-icon" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="60" cy="60" r="55" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="3"/>
+                                    <path d="M40 60 L80 60 M60 40 L60 80" stroke="white" stroke-width="8" stroke-linecap="round"/>
+                                    <circle cx="60" cy="60" r="8" fill="white"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <h1 class="hero-title">응급처치 챗봇</h1>
+                        <p class="hero-subtitle">전문 의료진이 제공하는<br>독성물질 노출 초기대응 가이드</p>
+                        <div class="hero-badge">
+                            <span class="badge-icon">🏥</span>
+                            <span class="badge-text">24시간 응급상담</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 메인 액션 카드 -->
+                <div class="main-action-card">
+                    <div class="card-illustration">
+                        <div class="illustration-circle circle-1"></div>
+                        <div class="illustration-circle circle-2"></div>
+                        <div class="illustration-icon">💬</div>
+                    </div>
+                    <div class="card-header-modern">
+                        <h2>오늘의 응급처치</h2>
+                        <p class="card-subtitle">중독물질 노출 대응 가이드</p>
+                    </div>
+                    <div class="card-body-modern">
+                        <button class="gradient-btn primary-gradient" data-action="start-chatbot">
+                            <span class="btn-icon-large">💬</span>
+                            <div class="btn-text">
+                                <span class="btn-title">상담 시작하기</span>
+                                <span class="btn-desc">챗봇이 단계별로 안내합니다</span>
+                            </div>
+                            <div class="btn-arrow">→</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 응급 상황 카드 -->
+                <div class="emergency-quick-card">
+                    <div class="emergency-illustration">
+                        <div class="pulse-ring"></div>
+                        <div class="emergency-icon-large">🚨</div>
+                    </div>
+                    <div class="emergency-header">
+                        <h3>응급상황인가요?</h3>
+                        <p class="emergency-desc">호흡곤란·의식저하·경련·대량섭취·흡입시</p>
+                    </div>
+                    <div class="emergency-buttons">
+                        <a href="tel:119" class="gradient-btn danger-gradient">
+                            <span class="btn-icon">📞</span>
+                            <span>119 신고</span>
+                        </a>
+                        <a href="tel:1339" class="gradient-btn secondary-gradient">
+                            <span class="btn-icon">🏥</span>
+                            <span>1339 응급의료정보센터</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 기능 카드들 -->
+                <div class="feature-cards">
+                    <button class="feature-card" data-action="show-guide">
+                        <div class="feature-card-bg"></div>
+                        <div class="feature-icon-wrapper">
+                            <div class="feature-icon">📋</div>
+                        </div>
+                        <h3>응급처치 가이드</h3>
+                        <p>자주 발생하는 중독물질별 대응법</p>
+                        <div class="feature-arrow">→</div>
+                    </button>
+                    <button class="feature-card" data-action="find-hospital">
+                        <div class="feature-card-bg"></div>
+                        <div class="feature-icon-wrapper">
+                            <div class="feature-icon">🏥</div>
+                        </div>
+                        <h3>병원 찾기</h3>
+                        <p>가까운 응급의료기관 찾기</p>
+                        <div class="feature-arrow">→</div>
+                    </button>
+                </div>
+
+                <!-- 검색 카드 -->
+                <div class="search-card">
+                    <h3>정보 검색</h3>
+                    <div class="search-box-modern">
+                        <input type="text" id="search-input" placeholder="노출물질 또는 증상 검색...">
+                        <button class="search-btn-modern" id="search-btn">🔍</button>
+                    </div>
+                    <div id="search-results" class="search-results"></div>
+                </div>
+
+                <!-- 안내 카드 -->
+                <div class="notice-card-modern">
+                    <div class="notice-header">
+                        <span class="notice-icon">⚠️</span>
+                        <h3>중요 안내</h3>
+                    </div>
+                    <ul class="notice-list-modern">
+                        <li>본 챗봇은 약물·농약·화학제품 등 독성물질 노출시 초기대응 정보를 제공합니다.</li>
+                        <li>입력된 노출물질과 증상을 바탕으로 정보를 제공하고, 필요시 119 신고 및 응급의료기관 안내를 제공합니다.</li>
+                        <li>정확한 물질명(또는 제품명)을 확인해 주세요.</li>
+                        <li>본 정보는 의료전문가의 진단·치료를 대체하지 않으며, 참고용으로만 제공됩니다.</li>
+                        <li>최종판단과 책임은 사용자에게 있습니다.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 챗봇 상담 페이지 -->
+            <section id="chatbot" class="page">
+                <div class="chatbot-container">
+                    <!-- 챗봇 내부 네비게이션 -->
+                    <nav class="chatbot-nav">
+                        <button class="chatbot-nav-btn" data-page="home">
+                            <span class="icon">🏠</span>
+                            <span>홈</span>
+                        </button>
+                        <button class="chatbot-nav-btn active" data-page="chatbot">
+                            <span class="icon">💬</span>
+                            <span>상담</span>
+                        </button>
+                        <button class="chatbot-nav-btn" data-page="guide">
+                            <span class="icon">📋</span>
+                            <span>응급처치</span>
+                        </button>
+                        <button class="chatbot-nav-btn" data-page="hospital">
+                            <span class="icon">🏥</span>
+                            <span>병원찾기</span>
+                        </button>
+                    </nav>
+                    <div class="chatbot-header">
+                        <button class="back-btn" data-action="back-to-home">←</button>
+                        <h2>상담 시작</h2>
+                    </div>
+
+                    <div class="chatbot-messages" id="chatbot-messages">
+                        <div class="message bot-message">
+                            <div class="message-content">
+                                <p>안녕하세요. 중독 응급처치 챗봇입니다.</p>
+                                <p>독성물질 노출시 초기대응 정보를 제공해드립니다.</p>
+                                <p class="message-notice">계속 진행하시겠습니까?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chatbot-actions" id="chatbot-actions">
+                        <button class="chat-action-btn" onclick="ChatbotManager.getInstance().handleContinue()">확인</button>
+                        <button class="chat-action-btn secondary" onclick="app.navigateToPage('home')">취소</button>
+                    </div>
+
+                    <div class="chatbot-input-area" id="chatbot-input-area" style="display: none;">
+                        <input type="text" id="chat-input" placeholder="메시지를 입력하세요...">
+                        <button id="chat-send-btn">전송</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 응급처치 가이드 페이지 -->
+            <section id="guide" class="page">
+                <!-- 응급처치 내부 네비게이션 -->
+                <nav class="page-nav">
+                    <button class="page-nav-btn" data-page="home">
+                        <span class="icon">🏠</span>
+                        <span>홈</span>
+                    </button>
+                    <button class="page-nav-btn" data-page="chatbot">
+                        <span class="icon">💬</span>
+                        <span>상담</span>
+                    </button>
+                    <button class="page-nav-btn active" data-page="guide">
+                        <span class="icon">📋</span>
+                        <span>응급처치</span>
+                    </button>
+                    <button class="page-nav-btn" data-page="hospital">
+                        <span class="icon">🏥</span>
+                        <span>병원찾기</span>
+                    </button>
+                </nav>
+                <div class="card">
+                    <div class="card-header">
+                        <h2>다빈도 중독물질 응급처치</h2>
+                        <p class="subtitle">아래 버튼을 눌러 증상을 알려주시거나 궁금한 걸 보내주시면 챗봇이 상담해 드릴게요.</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="substance-grid">
+                            <button class="substance-btn" data-substance="painkiller">
+                                <span class="substance-icon">💊</span>
+                                <span class="substance-name">해열·진통제</span>
+                            </button>
+                            <button class="substance-btn" data-substance="antidepressant">
+                                <span class="substance-icon">💊</span>
+                                <span class="substance-name">항우울제</span>
+                            </button>
+                            <button class="substance-btn" data-substance="antipsychotic">
+                                <span class="substance-icon">💊</span>
+                                <span class="substance-name">항정신병약</span>
+                            </button>
+                            <button class="substance-btn" data-substance="sleeping">
+                                <span class="substance-icon">💊</span>
+                                <span class="substance-name">수면제</span>
+                            </button>
+                            <button class="substance-btn" data-substance="cold">
+                                <span class="substance-icon">💊</span>
+                                <span class="substance-name">기침·콧물감기약</span>
+                            </button>
+                            <button class="substance-btn" data-substance="detergent">
+                                <span class="substance-icon">🧠</span>
+                                <span class="substance-name">세제</span>
+                            </button>
+                            <button class="substance-btn" data-substance="bleach">
+                                <span class="substance-icon">🧠</span>
+                                <span class="substance-name">락스(표백제)</span>
+                            </button>
+                            <button class="substance-btn" data-substance="pesticide">
+                                <span class="substance-icon">🌾</span>
+                                <span class="substance-name">농약</span>
+                            </button>
+                            <button class="substance-btn" data-substance="fire-extinguisher">
+                                <span class="substance-icon">🧠</span>
+                                <span class="substance-name">소화기 분말</span>
+                            </button>
+                            <button class="substance-btn" data-substance="antifreeze">
+                                <span class="substance-icon">🧠</span>
+                                <span class="substance-name">부동액</span>
+                            </button>
+                            <button class="substance-btn" data-substance="adhesive">
+                                <span class="substance-icon">🧠</span>
+                                <span class="substance-name">접착제</span>
+                            </button>
+                            <button class="substance-btn" data-substance="bee">
+                                <span class="substance-icon">🐝</span>
+                                <span class="substance-name">벌독</span>
+                            </button>
+                            <button class="substance-btn" data-substance="mushroom">
+                                <span class="substance-icon">🍄</span>
+                                <span class="substance-name">버섯(독버섯 포함)</span>
+                            </button>
+                            <button class="substance-btn" data-substance="animal">
+                                <span class="substance-icon">🐶</span>
+                                <span class="substance-name">동물교상(물림사고)</span>
+                            </button>
+                            <button class="substance-btn" data-substance="co">
+                                <span class="substance-icon">💨</span>
+                                <span class="substance-name">일산화탄소</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 병원 찾기 페이지 -->
+            <section id="hospital" class="page">
+                <!-- 병원찾기 내부 네비게이션 -->
+                <nav class="page-nav">
+                    <button class="page-nav-btn" data-page="home">
+                        <span class="icon">🏠</span>
+                        <span>홈</span>
+                    </button>
+                    <button class="page-nav-btn" data-page="chatbot">
+                        <span class="icon">💬</span>
+                        <span>상담</span>
+                    </button>
+                    <button class="page-nav-btn" data-page="guide">
+                        <span class="icon">📋</span>
+                        <span>응급처치</span>
+                    </button>
+                    <button class="page-nav-btn active" data-page="hospital">
+                        <span class="icon">🏥</span>
+                        <span>병원찾기</span>
+                    </button>
+                </nav>
+                <div class="card">
+                    <div class="card-header">
+                        <h2>주변 응급실 정보</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="hospital-search">
+                            <input type="text" id="location-input" placeholder="지역 또는 주소를 입력하세요">
+                            <button class="search-btn" id="location-search-btn">검색</button>
+                        </div>
+                        <div id="hospital-results" class="hospital-results">
+                            <p class="info-text">위치를 입력하여 가까운 응급의료기관을 찾아보세요.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>응급 연락처</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">🚨</div>
+                            <div class="contact-info">
+                                <h3>119 응급구조대</h3>
+                                <a href="tel:119" class="contact-btn">119 전화하기</a>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">🏥</div>
+                            <div class="contact-info">
+                                <h3>1339 응급의료정보센터</h3>
+                                <a href="tel:1339" class="contact-btn">1339 전화하기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 중독물질별 상세 페이지 (동적 생성) -->
+            <section id="substance-detail" class="page">
+                <!-- 동적으로 내용이 채워집니다 -->
+            </section>
+        </main>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="chatbotDB.js"></script>
+    <script src="hospitalDB.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

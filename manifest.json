@@ -1,0 +1,15 @@
+{
+  "name": "중독 응급처치 챗봇",
+  "short_name": "중독 응급처치",
+  "description": "독성물질 노출시 초기대응 정보를 제공하는 챗봇 기반 모바일 웹 앱",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F9FA",
+  "theme_color": "#4A90E2",
+  "orientation": "portrait",
+  "icons": [],
+  "categories": ["health", "medical", "education"],
+  "lang": "ko",
+  "dir": "ltr"
+}
+
