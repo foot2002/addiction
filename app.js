@@ -438,27 +438,14 @@ class ChatbotManager {
             return;
         }
 
-        // 메시지 컨테이너가 비어있거나 초기 메시지만 있는 경우에만 추가
-        const existingMessages = messagesContainer.querySelectorAll('.message');
-        if (existingMessages.length <= 1) {
-            // 기존 메시지 정리 (HTML의 기본 메시지 제외)
-            const defaultMessage = messagesContainer.querySelector('.message');
-            if (defaultMessage && defaultMessage.textContent.includes('안녕하세요')) {
-                messagesContainer.innerHTML = '';
-            }
+        // 기존 메시지 모두 제거 (항상 새로 시작)
+        messagesContainer.innerHTML = '';
 
-            // 초기 메시지
-            const noticeText = `• 본 챗봇은 약물·농약·화학제품 등 독성물질 노출시 초기대응 정보를 제공합니다.
-• 입력된 노출물질과 증상을 바탕으로 정보를 제공하고, 필요시 119 신고 및 응급의료기관 안내를 제공합니다.
-• 정확한 물질명(또는 제품명)을 확인해 주세요.
-• 호흡곤란·의식저하·경련·대량섭취·흡입시 즉시 119 신고 또는 응급실로 이동하십시오.
-• 본 정보는 의료전문가의 진단·치료를 대체하지 않으며, 참고용으로만 제공됩니다.
-• 최종판단과 책임은 사용자에게 있습니다.
+        // 초기 메시지 - 인사말
+        this.addBotMessage("안녕하세요! 중독 119 AI 상담원입니다.\n어떤 도움이 필요하신가요?");
 
-계속 진행하시겠습니까?`;
-
-            this.addBotMessage(noticeText);
-        }
+        // 긴급 안내 메시지
+        this.addEmergencyNotice();
 
         // 액션 버튼 설정
         const actionsContainer = document.getElementById('chatbot-actions');
@@ -489,6 +476,33 @@ class ChatbotManager {
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
+    addEmergencyNotice() {
+        const messagesContainer = document.getElementById('chatbot-messages');
+        if (!messagesContainer) return;
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message emergency-notice-message';
+        messageDiv.innerHTML = `
+            <div class="emergency-notice-box">
+                <div class="emergency-notice-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 22H22L12 2Z" fill="#E74C3C"/>
+                        <path d="M12 8V14M12 16V18" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="emergency-notice-content">
+                    <div class="emergency-notice-title">▲ 긴급 안내</div>
+                    <div class="emergency-notice-text">
+                        의식이 없거나 호흡 곤란이 온 경우,<br>
+                        즉시 <a href="tel:119" class="emergency-notice-link">119</a>에 전화하세요.
+                    </div>
+                </div>
+            </div>
+        `;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
     addUserMessage(text) {
         const messagesContainer = document.getElementById('chatbot-messages');
         if (!messagesContainer) return;
@@ -513,24 +527,35 @@ class ChatbotManager {
     askStep1_Category() {
         this.addBotMessage("노출물질을 선택하거나 검색해주세요");
         
+        // 채팅 메시지로 카테고리 카드들 표시
+        this.addCategoryCards();
+        
         const actionsContainer = document.getElementById('chatbot-actions');
         if (!actionsContainer) return;
 
-        let html = '<div class="substance-selection-grid">';
-        
-        Object.values(substanceCategories).forEach(category => {
-            html += `
-                <button class="substance-select-btn" onclick="ChatbotManager.getInstance().selectCategory('${category.id}')">
-                    <span>${category.icon}</span>
-                    <span>${category.name}</span>
-                </button>
-            `;
-        });
+        actionsContainer.innerHTML = '';
+    }
 
-        html += '</div>';
-        html += '<button class="chat-action-btn" onclick="ChatbotManager.getInstance().showSearch()">🔎 노출물질 검색</button>';
-        
-        actionsContainer.innerHTML = html;
+    addCategoryCards() {
+        const messagesContainer = document.getElementById('chatbot-messages');
+        if (!messagesContainer) return;
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message category-cards-message';
+        messageDiv.innerHTML = `
+            <div class="category-cards-container">
+                <div class="category-cards-grid">
+                    ${Object.values(substanceCategories).map(category => `
+                        <div class="category-card-item" onclick="ChatbotManager.getInstance().selectCategory('${category.id}')">
+                            <div class="category-card-icon">${category.icon}</div>
+                            <div class="category-card-name">${category.name}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
     selectCategory(categoryId) {
@@ -564,23 +589,37 @@ class ChatbotManager {
 
         this.addBotMessage("세부노출물질을 선택하거나 검색해주세요.\n★ 약병이나 약설명서에 있는 약성분을 확인해주세요.");
         
+        // 채팅 메시지로 세부물질 카드들 표시
+        this.addDetailCards(details);
+        
         const actionsContainer = document.getElementById('chatbot-actions');
         if (!actionsContainer) return;
 
-        let html = '<div class="substance-detail-list">';
-        
-        Object.entries(details).forEach(([key, detail]) => {
-            html += `
-                <button class="substance-detail-btn" onclick="ChatbotManager.getInstance().selectDetail('${key}')">
-                    ${detail.name}
-                </button>
-            `;
-        });
-
-        html += '</div>';
-        html += '<button class="chat-action-btn secondary" onclick="ChatbotManager.getInstance().askStep1_Category()">← 뒤로</button>';
+        let html = '<button class="chat-action-btn secondary" onclick="ChatbotManager.getInstance().askStep1_Category()">← 뒤로</button>';
         
         actionsContainer.innerHTML = html;
+    }
+
+    addDetailCards(details) {
+        const messagesContainer = document.getElementById('chatbot-messages');
+        if (!messagesContainer) return;
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message category-cards-message';
+        messageDiv.innerHTML = `
+            <div class="category-cards-container">
+                <div class="category-cards-grid">
+                    ${Object.entries(details).map(([key, detail]) => `
+                        <div class="category-card-item" onclick="ChatbotManager.getInstance().selectDetail('${key}')">
+                            <div class="category-card-icon">💊</div>
+                            <div class="category-card-name">${detail.name}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
     selectDetail(detailKey) {
@@ -615,23 +654,37 @@ class ChatbotManager {
 
         this.addBotMessage("섭취 및 접촉 경로를 선택해주세요");
         
+        // 채팅 메시지로 접촉 경로 카드들 표시
+        this.addRouteCards();
+        
         const actionsContainer = document.getElementById('chatbot-actions');
         if (!actionsContainer) return;
 
-        let html = '<div class="route-selection-list">';
-        
-        Object.values(exposureRoutes).forEach(route => {
-            html += `
-                <button class="route-select-btn" onclick="ChatbotManager.getInstance().selectRoute('${route.id}')">
-                    ${route.icon} ${route.name}
-                </button>
-            `;
-        });
-
-        html += '</div>';
-        html += '<button class="chat-action-btn secondary" onclick="ChatbotManager.getInstance().goBack()">← 뒤로</button>';
+        let html = '<button class="chat-action-btn secondary" onclick="ChatbotManager.getInstance().goBack()">← 뒤로</button>';
         
         actionsContainer.innerHTML = html;
+    }
+
+    addRouteCards() {
+        const messagesContainer = document.getElementById('chatbot-messages');
+        if (!messagesContainer) return;
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message category-cards-message';
+        messageDiv.innerHTML = `
+            <div class="category-cards-container">
+                <div class="category-cards-grid">
+                    ${Object.values(exposureRoutes).map(route => `
+                        <div class="category-card-item" onclick="ChatbotManager.getInstance().selectRoute('${route.id}')">
+                            <div class="category-card-icon">${route.icon}</div>
+                            <div class="category-card-name">${route.name}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
     selectRoute(routeId) {
@@ -649,50 +702,77 @@ class ChatbotManager {
     askStep4_Symptom() {
         this.addBotMessage("노출 후 증상을 선택하거나 검색해 주세요.");
         
+        // 채팅 메시지로 증상 카테고리 카드들 표시
+        this.addSymptomCategoryCards();
+        
         const actionsContainer = document.getElementById('chatbot-actions');
         if (!actionsContainer) return;
 
-        let html = '<div class="symptom-selection-grid">';
-        
-        Object.values(symptomCategories).forEach(category => {
-            if (category.id === 'none') return; // 증상없음은 별도 처리
-            html += `
-                <button class="symptom-category-btn" onclick="ChatbotManager.getInstance().showSymptomDetails('${category.id}')">
-                    ${category.name}
-                </button>
-            `;
-        });
-
-        html += '</div>';
-        html += '<button class="chat-action-btn" onclick="ChatbotManager.getInstance().skipSymptoms()">❌ 증상없음</button>';
-        html += '<button class="chat-action-btn" onclick="ChatbotManager.getInstance().showSearch()">🔎 주증상, 세부증상 검색</button>';
+        let html = '<button class="chat-action-btn" onclick="ChatbotManager.getInstance().skipSymptoms()">❌ 증상없음</button>';
         html += '<button class="chat-action-btn secondary" onclick="ChatbotManager.getInstance().goBack()">← 뒤로</button>';
         
         actionsContainer.innerHTML = html;
+    }
+
+    addSymptomCategoryCards() {
+        const messagesContainer = document.getElementById('chatbot-messages');
+        if (!messagesContainer) return;
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message category-cards-message';
+        messageDiv.innerHTML = `
+            <div class="category-cards-container">
+                <div class="category-cards-grid">
+                    ${Object.values(symptomCategories).filter(category => category.id !== 'none').map(category => `
+                        <div class="category-card-item" onclick="ChatbotManager.getInstance().showSymptomDetails('${category.id}')">
+                            <div class="category-card-icon">${category.name.split(' ')[0]}</div>
+                            <div class="category-card-name">${category.name.split(' ').slice(1).join(' ')}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
     showSymptomDetails(categoryId) {
         const category = symptomCategories[categoryId];
         if (!category || !category.symptoms || category.symptoms.length === 0) return;
 
+        // 채팅 메시지로 세부 증상 카드들 표시
+        this.addSymptomDetailCards(category);
+        
         const actionsContainer = document.getElementById('chatbot-actions');
         if (!actionsContainer) return;
 
-        let html = `<p class="category-title">${category.name} 증상 선택</p><div class="symptom-list">`;
-        
-        category.symptoms.forEach(symptom => {
-            html += `
-                <button class="symptom-item-btn" onclick="ChatbotManager.getInstance().addSymptom('${symptom}', '${categoryId}')">
-                    - ${symptom}
-                </button>
-            `;
-        });
-
-        html += '</div>';
-        html += '<button class="chat-action-btn" onclick="ChatbotManager.getInstance().askStep4_Symptom()">← 뒤로</button>';
+        let html = '<button class="chat-action-btn" onclick="ChatbotManager.getInstance().askStep4_Symptom()">← 뒤로</button>';
         html += '<button class="chat-action-btn" onclick="ChatbotManager.getInstance().showResult()">응급처치법 보기</button>';
         
         actionsContainer.innerHTML = html;
+    }
+
+    addSymptomDetailCards(category) {
+        const messagesContainer = document.getElementById('chatbot-messages');
+        if (!messagesContainer) return;
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message category-cards-message';
+        messageDiv.innerHTML = `
+            <div class="category-cards-container">
+                <div class="category-cards-title">${category.name} 증상 선택</div>
+                <div class="category-cards-grid">
+                    ${category.symptoms.map(symptom => `
+                        <div class="category-card-item" onclick="ChatbotManager.getInstance().addSymptom('${symptom}', '${category.id}')">
+                            <div class="category-card-icon">📋</div>
+                            <div class="category-card-name">${symptom}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
     addSymptom(symptom, categoryId) {
@@ -861,10 +941,6 @@ class ChatbotManager {
         }
     }
 
-    showSearch() {
-        // 검색 기능 (추후 구현)
-        alert('검색 기능은 추후 구현 예정입니다.');
-    }
 
 
     restart() {

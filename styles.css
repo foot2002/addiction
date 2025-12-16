@@ -323,6 +323,14 @@ body {
 .gradient-btn .btn-icon {
     font-size: 20px;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gradient-btn .btn-icon svg {
+    width: 48px;
+    height: 48px;
 }
 
 .btn-arrow {
@@ -367,6 +375,14 @@ body {
 .btn-icon-large {
     font-size: 32px;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon-large svg {
+    width: 64px;
+    height: 64px;
 }
 
 .btn-text {
@@ -542,8 +558,9 @@ body {
 }
 
 .feature-icon {
-    font-size: 36px;
-    color: white;
+    width: 96px;
+    height: 96px;
+    display: block;
 }
 
 .feature-card h3 {
@@ -816,6 +833,15 @@ body {
 .page-nav-btn .icon,
 .chatbot-nav-btn .icon {
     font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-nav-btn .icon svg,
+.chatbot-nav-btn .icon svg {
+    width: 48px;
+    height: 48px;
 }
 
 .page-nav-btn.active,
@@ -1218,6 +1244,130 @@ body {
 
 .message-content p:last-child {
     margin-bottom: 0;
+}
+
+/* 긴급 안내 박스 */
+.emergency-notice-message {
+    margin-bottom: 16px;
+}
+
+.emergency-notice-box {
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+    border: 2px solid #E74C3C;
+    border-left: 4px solid #E74C3C;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2);
+    max-width: 85%;
+}
+
+.emergency-notice-icon {
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.emergency-notice-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.emergency-notice-content {
+    flex: 1;
+}
+
+.emergency-notice-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #E74C3C;
+    margin-bottom: 8px;
+}
+
+.emergency-notice-text {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.emergency-notice-link {
+    color: #E74C3C;
+    text-decoration: underline;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.emergency-notice-link:hover,
+.emergency-notice-link:active {
+    color: #C0392B;
+    text-decoration: none;
+}
+
+/* 카테고리 카드 메시지 */
+.category-cards-message {
+    margin-bottom: 16px;
+}
+
+.category-cards-container {
+    max-width: 85%;
+}
+
+.category-cards-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    padding: 0 4px;
+}
+
+.category-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.category-card-item {
+    background: var(--surface);
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-height: 70px;
+    justify-content: center;
+}
+
+.category-card-item:hover,
+.category-card-item:active {
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.15);
+    transform: translateY(-1px);
+    background: #f0f7ff;
+}
+
+.category-card-icon {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.category-card-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+    word-break: keep-all;
 }
 
 .message-notice {
